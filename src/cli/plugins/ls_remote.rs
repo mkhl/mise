@@ -23,7 +23,8 @@ pub struct PluginsLsRemote {
 }
 
 impl PluginsLsRemote {
-    pub fn run(self, config: &Config) -> Result<()> {
+    pub fn run(self) -> Result<()> {
+        let config = Config::get();
         let installed_plugins = plugins::list()
             .into_iter()
             .filter(|p| p.is_installed())

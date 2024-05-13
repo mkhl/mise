@@ -28,7 +28,7 @@ pub struct Which {
 }
 
 impl Which {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let ts = self.get_toolset()?;
 
         match ts.which(&self.bin_name) {

@@ -46,7 +46,8 @@ pub struct PluginsLs {
 }
 
 impl PluginsLs {
-    pub fn run(self, config: &Config) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
+        let config = Config::get();
         let mut tools = plugins::list().into_iter().collect::<BTreeSet<_>>();
 
         if self.all {

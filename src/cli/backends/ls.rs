@@ -8,7 +8,7 @@ use crate::forge::{self, ForgeType};
 pub struct BackendsLs {}
 
 impl BackendsLs {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let mut forges = forge::list_forge_types();
         forges.retain(|f| *f != ForgeType::Asdf);
 

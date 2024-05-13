@@ -14,7 +14,7 @@ pub struct SettingsUnset {
 }
 
 impl SettingsUnset {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let path = env::MISE_CONFIG_DIR.join("config.toml");
         let raw = file::read_to_string(&path)?;
         let mut settings: DocumentMut = raw.parse()?;

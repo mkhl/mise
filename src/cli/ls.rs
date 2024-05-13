@@ -70,7 +70,7 @@ pub struct Ls {
 }
 
 impl Ls {
-    pub fn run(mut self) -> Result<()> {
+    pub async fn run(mut self) -> Result<()> {
         let config = Config::try_get()?;
         self.plugin = self
             .plugin

@@ -12,7 +12,7 @@ use crate::{env, hook_env};
 pub struct Deactivate {}
 
 impl Deactivate {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         if !env::is_activated() {
             err_inactive()?;
         }

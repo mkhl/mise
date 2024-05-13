@@ -17,7 +17,7 @@ pub struct SettingsLs {
 }
 
 impl SettingsLs {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let settings = Settings::try_get()?;
         let mut settings = settings.as_dict()?;
         for k in Settings::hidden_configs() {

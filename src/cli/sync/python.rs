@@ -18,7 +18,7 @@ pub struct SyncPython {
 }
 
 impl SyncPython {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let python = plugins::get("python");
 

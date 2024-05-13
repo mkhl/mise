@@ -41,7 +41,7 @@ pub struct Set {
 }
 
 impl Set {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         if self.remove.is_none() && self.env_vars.is_none() {
             let rows = config

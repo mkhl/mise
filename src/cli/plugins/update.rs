@@ -23,7 +23,7 @@ pub struct Update {
 }
 
 impl Update {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let plugins: Vec<_> = match self.plugin {
             Some(plugins) => plugins
                 .into_iter()

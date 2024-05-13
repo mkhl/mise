@@ -52,7 +52,7 @@ pub struct Local {
 }
 
 impl Local {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let path = if self.parent {
             get_parent_path()?
         } else {

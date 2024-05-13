@@ -20,7 +20,7 @@ pub struct TasksEdit {
 }
 
 impl TasksEdit {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let settings = Settings::try_get()?;
         settings.ensure_experimental("`mise tasks edit`")?;

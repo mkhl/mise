@@ -12,7 +12,7 @@ use crate::file;
 pub struct RenderHelp {}
 
 impl RenderHelp {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let readme = file::read_to_string("docs/cli-reference.md")?;
         let mut current_readme = readme.split("<!-- MISE:COMMANDS -->");
 

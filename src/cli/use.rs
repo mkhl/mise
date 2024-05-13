@@ -79,7 +79,7 @@ pub struct Use {
 }
 
 impl Use {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let mut ts = ToolsetBuilder::new().build(&config)?;
         let mpr = MultiProgressReport::get();

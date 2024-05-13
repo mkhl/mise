@@ -50,10 +50,11 @@ pub struct PluginsInstall {
 }
 
 impl PluginsInstall {
-    pub fn run(self, config: &Config) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
+        let config = Config::get();
         let mpr = MultiProgressReport::get();
         if self.all {
-            return self.install_all_missing_plugins(config, &mpr);
+            return self.install_all_missing_plugins(&config, &mpr);
         }
         let (name, git_url) = get_name_and_url(&self.new_plugin.clone().unwrap(), &self.git_url)?;
         if git_url.is_some() {

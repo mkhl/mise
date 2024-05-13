@@ -13,7 +13,7 @@ pub struct CacheClear {
 }
 
 impl CacheClear {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let cache_dirs = match &self.plugin {
             Some(plugins) => plugins.iter().map(|p| CACHE.join(p)).collect(),
             None => vec![CACHE.to_path_buf()],

@@ -26,7 +26,7 @@ pub struct Latest {
 }
 
 impl Latest {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let mut prefix = match self.tool.tvr {
             None => self.asdf_version,

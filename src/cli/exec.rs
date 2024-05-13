@@ -49,7 +49,7 @@ pub struct Exec {
 }
 
 impl Exec {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let mut ts = ToolsetBuilder::new()
             .with_args(&self.tool)

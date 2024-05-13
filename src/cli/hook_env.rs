@@ -33,7 +33,7 @@ pub struct HookEnv {
 }
 
 impl HookEnv {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let watch_files = config.watch_files()?;
         if hook_env::should_exit_early(&watch_files) {

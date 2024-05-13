@@ -43,7 +43,7 @@ pub struct Upgrade {
 }
 
 impl Upgrade {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let ts = ToolsetBuilder::new().with_args(&self.tool).build(&config)?;
         let mut outdated = ts.list_outdated_versions();

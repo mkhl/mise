@@ -12,7 +12,7 @@ use crate::cli::{version, Cli};
 pub struct RenderMangen {}
 
 impl RenderMangen {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let cli = Cli::command()
             .version(version::V.to_string())
             .disable_colored_help(true);

@@ -41,7 +41,7 @@ pub struct Prune {
 }
 
 impl Prune {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         if self.configs || !self.tools {
             self.prune_configs()?;
         }

@@ -21,17 +21,17 @@ enum Commands {
 }
 
 impl Commands {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         match self {
-            Self::Clear(cmd) => cmd.run(),
+            Self::Clear(cmd) => cmd.run().await,
         }
     }
 }
 
 impl Cache {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         match self.command {
-            Some(cmd) => cmd.run(),
+            Some(cmd) => cmd.run().await,
             None => {
                 // just show the cache dir
                 miseprintln!("{}", env::MISE_CACHE_DIR.display());

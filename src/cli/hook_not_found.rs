@@ -20,7 +20,7 @@ pub struct HookNotFound {
 }
 
 impl HookNotFound {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let settings = Settings::try_get()?;
         if settings.not_found_auto_install {

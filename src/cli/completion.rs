@@ -25,7 +25,7 @@ pub struct Completion {
 }
 
 impl Completion {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let shell = self.shell.or(self.shell_type).unwrap();
 
         let script = match self.call_usage(shell) {

@@ -35,7 +35,7 @@ pub struct Trust {
 }
 
 impl Trust {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         if self.untrust {
             self.untrust()
         } else if self.all {

@@ -33,7 +33,7 @@ pub struct Doctor {
 }
 
 impl Doctor {
-    pub fn run(mut self) -> eyre::Result<()> {
+    pub async fn run(mut self) -> eyre::Result<()> {
         inline_section("version", &*VERSION)?;
         inline_section("activated", yn(env::is_activated()))?;
         inline_section("shims_on_path", yn(shims_on_path()))?;

@@ -9,7 +9,7 @@ use crate::toolset::ToolsetBuilder;
 pub struct BinPaths {}
 
 impl BinPaths {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let ts = ToolsetBuilder::new().build(&config)?;
         ts.notify_if_versions_missing();

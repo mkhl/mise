@@ -19,7 +19,7 @@ pub struct SettingsSet {
 }
 
 impl SettingsSet {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let value: toml_edit::Value = match self.setting.as_str() {
             "activate_aggressive" => parse_bool(&self.value)?,
             "all_compile" => parse_bool(&self.value)?,

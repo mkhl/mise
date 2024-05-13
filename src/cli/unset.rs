@@ -27,7 +27,7 @@ pub struct Unset {
 }
 
 impl Unset {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let filename = self.file.unwrap_or_else(|| match self.global {
             true => env::MISE_GLOBAL_CONFIG_FILE.clone(),
             false => env::MISE_DEFAULT_CONFIG_FILENAME.clone().into(),

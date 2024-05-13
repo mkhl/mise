@@ -17,22 +17,22 @@ pub struct Asdf {
 }
 
 impl Asdf {
-    pub fn run(mut self) -> Result<()> {
+    pub async fn run(mut self) -> Result<()> {
         let config = Config::try_get()?;
         let mut args = vec![String::from("mise")];
         args.append(&mut self.args);
 
         match args.get(1).map(|s| s.as_str()) {
-            Some("reshim") => Cli::run(&args),
+            Some("reshim") => Cli::run(&args).await,
             Some("list") => list_versions(&config, &args),
             Some("install") => {
                 if args.len() == 4 {
                     let version = args.pop().unwrap();
                     args[2] = format!("{}@{}", args[2], version);
                 }
-                Cli::run(&args)
+                Cli::run(&args).await
             }
-            _ => Cli::run(&args),
+            _ => Cli::run(&args).await,
         }
     }
 }

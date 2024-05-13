@@ -15,8 +15,9 @@ use crate::toolset::ToolsetBuilder;
 pub struct Envrc {}
 
 impl Envrc {
-    pub fn run(self, config: &Config) -> Result<()> {
-        let ts = ToolsetBuilder::new().build(config)?;
+    pub async fn run(self) -> Result<()> {
+        let config = Config::try_get()?;
+        let ts = ToolsetBuilder::new().build(&config)?;
 
         let envrc_path = env::MISE_TMP_DIR
             .join("direnv")

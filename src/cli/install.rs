@@ -46,7 +46,7 @@ pub struct Install {
 }
 
 impl Install {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         match &self.tool {
             Some(runtime) => self.install_runtimes(&config, runtime)?,

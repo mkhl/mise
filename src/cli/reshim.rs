@@ -29,7 +29,7 @@ pub struct Reshim {
 }
 
 impl Reshim {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let ts = ToolsetBuilder::new().build(&config)?;
 

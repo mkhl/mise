@@ -41,7 +41,7 @@ pub static VERSION: Lazy<String> = Lazy::new(|| {
 pub static V: Lazy<Versioning> = Lazy::new(|| Versioning::new(env!("CARGO_PKG_VERSION")).unwrap());
 
 impl Version {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         show_version()?;
         Ok(())
     }

@@ -23,7 +23,7 @@ pub struct Implode {
 }
 
 impl Implode {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let mut files = vec![*dirs::STATE, *dirs::DATA, *dirs::CACHE, &*env::MISE_BIN];
         if self.config {
             files.push(&dirs::CONFIG);

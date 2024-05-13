@@ -32,7 +32,7 @@ pub struct Link {
 }
 
 impl Link {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let version = match self.tool.tvr {
             Some(ref tvr) => tvr.version(),

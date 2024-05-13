@@ -74,11 +74,15 @@ mod toml;
 mod toolset;
 mod ui;
 
-fn main() -> eyre::Result<()> {
+#[tokio::main]
+async fn main() -> eyre::Result<()> {
     let args = env::args().collect_vec();
     color_eyre::install()?;
 
-    match Cli::run(&args).with_section(|| VERSION.to_string().header("Version:")) {
+    match Cli::run(&args)
+        .with_section(|| VERSION.to_string().header("Version:"))
+        .await
+    {
         Ok(()) => Ok(()),
         Err(err) => handle_err(err),
     }

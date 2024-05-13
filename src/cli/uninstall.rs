@@ -30,7 +30,7 @@ pub struct Uninstall {
 }
 
 impl Uninstall {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         let tool_versions = if self.installed_tool.is_empty() && self.all {
             self.get_all_tool_versions(&config)?

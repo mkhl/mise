@@ -32,7 +32,7 @@ pub struct LsRemote {
 }
 
 impl LsRemote {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         if let Some(plugin) = self.get_plugin()? {
             self.run_single(plugin)
         } else {

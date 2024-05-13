@@ -37,7 +37,7 @@ pub struct Shell {
 }
 
 impl Shell {
-    pub fn run(self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         let config = Config::try_get()?;
         if !env::is_activated() {
             err_inactive()?;

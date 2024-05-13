@@ -5,8 +5,8 @@ use std::time::Duration;
 
 use eyre::{Report, Result};
 use once_cell::sync::Lazy;
-use reqwest::blocking::{ClientBuilder, Response};
 use reqwest::IntoUrl;
+use reqwest::{ClientBuilder, Response};
 
 use crate::cli::version;
 use crate::env::MISE_FETCH_REMOTE_VERSIONS_TIMEOUT;
@@ -25,7 +25,7 @@ pub static HTTP_FETCH: Lazy<Client> =
 
 #[derive(Debug)]
 pub struct Client {
-    reqwest: reqwest::blocking::Client,
+    reqwest: reqwest::Client,
 }
 
 impl Client {
