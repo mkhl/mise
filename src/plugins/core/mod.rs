@@ -1,4 +1,6 @@
 use std::ffi::OsString;
+use std::fmt::Debug;
+
 use std::sync::Arc;
 
 use eyre::Result;
@@ -52,7 +54,6 @@ pub static CORE_PLUGINS: Lazy<ForgeList> = Lazy::new(|| {
     plugins
 });
 
-#[derive(Debug)]
 pub struct CorePlugin {
     pub fa: ForgeArg,
     pub name: &'static str,
@@ -97,5 +98,14 @@ impl CorePlugin {
             .filter(|v| !v.is_empty())
             .collect_vec();
         Ok(Some(versions))
+    }
+}
+
+impl Debug for CorePlugin {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("CorePlugin")
+            .field("name", &self.name)
+            .field("fa", &self.fa)
+            .finish()
     }
 }

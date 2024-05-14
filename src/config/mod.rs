@@ -12,7 +12,6 @@ use rayon::prelude::*;
 
 pub use settings::Settings;
 
-use crate::cli::args::ForgeArg;
 use crate::cli::version;
 use crate::config::config_file::legacy_version::LegacyVersionFile;
 use crate::config::config_file::mise_toml::MiseToml;
@@ -32,7 +31,7 @@ mod env_directive;
 pub mod settings;
 pub mod tracking;
 
-type AliasMap = BTreeMap<ForgeArg, BTreeMap<String, String>>;
+type AliasMap = BTreeMap<String, BTreeMap<String, String>>;
 type ConfigMap = IndexMap<PathBuf, Box<dyn ConfigFile>>;
 type EnvWithSources = IndexMap<String, (String, PathBuf)>;
 
@@ -89,7 +88,7 @@ impl Config {
 
         config.validate()?;
 
-        debug!("{config:#?}");
+        trace!("{config:#?}");
 
         Ok(config)
     }
@@ -174,7 +173,7 @@ impl Config {
     }
 
     pub fn resolve_alias(&self, forge: &dyn Forge, v: &str) -> Result<String> {
-        if let Some(plugin_aliases) = self.aliases.get(forge.fa()) {
+        if let Some(plugin_aliases) = self.aliases.get(&forge.fa().id) {
             if let Some(alias) = plugin_aliases.get(v) {
                 return Ok(alias.clone());
             }
@@ -199,7 +198,7 @@ impl Config {
             .collect();
         for (fa, plugin_aliases) in plugin_aliases {
             for (from, to) in plugin_aliases {
-                aliases.entry(fa.clone()).or_default().insert(from, to);
+                aliases.entry(&fa.clone().id).or_default().insert(from, to);
             }
         }
 

@@ -28,6 +28,7 @@ impl Forge for UbiForge {
     }
 
     fn get_dependencies(&self, _tvr: &ToolRequest) -> eyre::Result<Vec<ForgeArg>> {
+        // Ok(vec!["ubi".into()])
         Ok(vec!["cargo:ubi".into()])
     }
 

@@ -2,27 +2,30 @@ use std::fmt::{Debug, Display};
 use std::hash::Hash;
 use std::path::PathBuf;
 
-use crate::dirs;
-use crate::forge::{unalias_forge, ForgeType};
+use crate::forge::unalias_forge;
+use crate::forge::ForgeType;
+use crate::{dirs, registry};
 
 #[derive(Clone, PartialOrd, Ord)]
 pub struct ForgeArg {
     pub id: String,
     pub name: String,
     pub forge_type: ForgeType,
+    pub input: String,
     pub cache_path: PathBuf,
     pub installs_path: PathBuf,
     pub downloads_path: PathBuf,
 }
 
 impl From<&str> for ForgeArg {
-    fn from(s: &str) -> Self {
+    fn from(input: &str) -> Self {
+        let s = registry::get(input).unwrap_or(input);
         if let Some((forge_type, name)) = s.split_once(':') {
             if let Ok(forge_type) = forge_type.parse() {
-                return Self::new(forge_type, name);
+                return Self::new(forge_type, name).with_input(input);
             }
         }
-        Self::new(ForgeType::Asdf, s)
+        Self::new(ForgeType::Asdf, s).with_input(input)
     }
 }
 impl From<&String> for ForgeArg {
@@ -40,6 +43,7 @@ impl ForgeArg {
         };
         let pathname = regex!(r#"[/:]"#).replace_all(&id, "-").to_string();
         Self {
+            input: name.clone(),
             name,
             forge_type,
             id,
@@ -48,10 +52,16 @@ impl ForgeArg {
             downloads_path: dirs::DOWNLOADS.join(&pathname),
         }
     }
+
+    fn with_input(mut self, input: &str) -> Self {
+        self.input = input.to_string();
+        self
+    }
 }
 
 impl Display for ForgeArg {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        // TODO: use self.input when we're sure that won't break anything
         write!(f, "{}", self.id)
     }
 }

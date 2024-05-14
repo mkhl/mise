@@ -168,6 +168,7 @@ impl Toolset {
             .into_iter()
             .map(|(fa, v)| (forge::get(&fa), v.collect_vec()))
             .collect();
+        dbg!(&queue);
         for (t, _) in &queue {
             if !t.is_installed() {
                 t.ensure_installed(mpr, false)?;

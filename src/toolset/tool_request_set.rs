@@ -1,18 +1,16 @@
-use std::collections::{BTreeMap, BTreeSet};
-use std::fmt::{Debug, Display};
-
-use indexmap::IndexMap;
-use itertools::Itertools;
-
 use crate::cli::args::{ForgeArg, ToolArg};
 use crate::config::{Config, Settings};
 use crate::toolset::{ToolRequest, ToolSource};
 use crate::{config, env};
+use indexmap::IndexMap;
+use itertools::Itertools;
+use std::collections::{BTreeMap, BTreeSet};
+use std::fmt::{Debug, Display};
 
 #[derive(Debug, Default, Clone)]
 pub struct ToolRequestSet {
-    pub tools: IndexMap<ForgeArg, Vec<ToolRequest>>,
-    pub sources: BTreeMap<ForgeArg, ToolSource>,
+    pub tools: IndexMap<String, Vec<ToolRequest>>,
+    pub sources: BTreeMap<String, ToolSource>,
 }
 
 impl ToolRequestSet {
@@ -49,10 +47,10 @@ impl ToolRequestSet {
 
     pub fn add_version(&mut self, tr: ToolRequest, source: &ToolSource) {
         let fa = tr.forge();
-        if !self.tools.contains_key(fa) {
-            self.sources.insert(fa.clone(), source.clone());
+        if !self.tools.contains_key(&fa.id) {
+            self.sources.insert(fa.id.clone(), source.clone());
         }
-        let list = self.tools.entry(tr.forge().clone()).or_default();
+        let list = self.tools.entry(tr.forge().id.clone()).or_default();
         list.push(tr);
     }
 }
@@ -60,7 +58,7 @@ impl ToolRequestSet {
 impl Display for ToolRequestSet {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let versions = self.tools.values().flatten().join(" ");
-        writeln!(f, "ToolRequestSet: {}", versions)?;
+        writeln!(f, "ToolRequestSet: {versions}")?;
         Ok(())
     }
 }
@@ -74,9 +72,9 @@ pub struct ToolRequestSetBuilder {
     /// default to latest version if no version is specified (for `mise x`)
     default_to_latest: bool,
     /// tools which will be disabled
-    disable_tools: Vec<ForgeArg>,
+    disable_tools: Vec<String>,
     /// whitelist of tools to install
-    tool_filter: Option<BTreeSet<ForgeArg>>,
+    tool_filter: Option<BTreeSet<String>>,
     // /// only show tools which are already installed
     // installed_only: bool,
 }
@@ -122,13 +120,16 @@ impl ToolRequestSetBuilder {
             }
         }
 
-        debug!("ToolRequestSet.build({:?}): {trs}", start_ms.elapsed());
+        debug!("ToolRequestSet ({:?}): {trs}", start_ms.elapsed());
         Ok(trs)
     }
 
-    fn is_disabled(&self, fa: &ForgeArg) -> bool {
-        self.disable_tools.contains(fa)
-            || self.tool_filter.as_ref().is_some_and(|tf| !tf.contains(fa))
+    fn is_disabled(&self, tool: &str) -> bool {
+        self.disable_tools.contains(&tool.to_string())
+            || self
+                .tool_filter
+                .as_ref()
+                .is_some_and(|tf| !tf.contains(tool))
     }
 
     fn load_config_files(&self, trs: &mut ToolRequestSet) -> eyre::Result<()> {
@@ -177,7 +178,7 @@ impl ToolRequestSetBuilder {
                     // should default to installing the "latest" version if no version is specified
                     // in .mise.toml
 
-                    if !trs.tools.contains_key(&arg.forge) {
+                    if !trs.tools.contains_key(&arg.forge.id) {
                         // no active version, so use "latest"
                         let tr = ToolRequest::new(arg.forge.clone(), "latest")?;
                         arg_ts.add_version(tr, &ToolSource::Argument);

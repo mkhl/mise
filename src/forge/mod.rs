@@ -38,7 +38,7 @@ mod pipx;
 mod ubi;
 
 pub type AForge = Arc<dyn Forge>;
-pub type ForgeMap = BTreeMap<ForgeArg, AForge>;
+pub type ForgeMap = BTreeMap<String, AForge>;
 pub type ForgeList = Vec<AForge>;
 
 #[derive(
@@ -108,12 +108,15 @@ pub fn list_forge_types() -> Vec<ForgeType> {
 }
 
 pub fn get(fa: &ForgeArg) -> AForge {
+    dbg!(fa);
     if let Some(forge) = load_forges().get(fa) {
         forge.clone()
     } else {
         let mut m = FORGES.lock().unwrap();
         let forges = m.as_mut().unwrap();
         let name = fa.name.to_string();
+        dbg!(forges);
+        panic!("{}", &name);
         forges
             .entry(fa.clone())
             .or_insert_with(|| match fa.forge_type {
